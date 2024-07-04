@@ -3,6 +3,12 @@ const UserModel = require('../model/userModel');
 async function makeSubscription(req, res) {
     const { website, startDate, email, endDate, consumer, planID } = req.body
     try {
+        const exists = await UserModel.find(email)
+        if(exists) {
+            res.status(400).send({
+                message : "Email already registered"
+            })
+        }
 
         const user = await UserModel.create({
             website,
